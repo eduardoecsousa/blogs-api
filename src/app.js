@@ -11,6 +11,8 @@ app.get('/', (_request, response) => {
 
 app.use(express.json());
 
+app.get('/');
+
 // ...
 
 // É importante exportar a constante `app`,
