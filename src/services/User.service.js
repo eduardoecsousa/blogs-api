@@ -48,15 +48,31 @@ const registerUser = async (displayName, email, password, image) => {
   return makeToken({ displayName, email, image });
 };
 
-const getAllUsers = async () => {
+const findAllUsers = async () => {
   const users = await User.findAll({
     attributes: { exclude: ['password'] },
   });
   return users;
 };
 
+const findById = async (id) => {
+  const user = await User.findOne({
+    where: { id },
+    attributes: { exclude: ['password'] },
+  });
+  if (!user) {
+    throw Object.assign(
+      new Error('User does not exist'),
+      { code: 404 },
+   );
+  }
+
+  return user;
+};
+
 module.exports = {
   loginServise,
   registerUser,
-  getAllUsers,
+  findAllUsers,
+  findById,
 };
