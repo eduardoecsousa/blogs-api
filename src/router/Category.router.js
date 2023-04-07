@@ -6,5 +6,6 @@ const { validaInputName } = require('../middlewares/checkInputs');
 const router = express.Router();
 
 router.post('/', authenticateToken, validaInputName, categoryController.regiterCategory);
+router.get('/', authenticateToken, categoryController.getAllCategories);
 
 module.exports = router;
