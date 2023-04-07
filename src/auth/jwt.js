@@ -13,6 +13,12 @@ const makeToken = (payload) => {
   return token;
 };
 
+const authenticateToken = (token) => {
+  const decoded = jwt.verify(token, secret);
+  return decoded;
+};
+
 module.exports = {
   makeToken,
+  authenticateToken,
 };

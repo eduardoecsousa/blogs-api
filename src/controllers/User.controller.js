@@ -29,7 +29,18 @@ const createUser = async (req, res) => {
   }
 };
 
+const getAll = async (req, res) => {
+  try {
+    const users = await userService.getAllUsers();
+
+    return res.status(200).json(users);
+  } catch (error) {
+    return res.status(500).json({ message: 'Error Internal' }); 
+  }
+};
+
 module.exports = { 
   login,
   createUser,
+  getAll,
 };

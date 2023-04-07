@@ -48,7 +48,15 @@ const registerUser = async (displayName, email, password, image) => {
   return makeToken({ displayName, email, image });
 };
 
+const getAllUsers = async () => {
+  const users = await User.findAll({
+    attributes: { exclude: ['password'] },
+  });
+  return users;
+};
+
 module.exports = {
   loginServise,
   registerUser,
+  getAllUsers,
 };
