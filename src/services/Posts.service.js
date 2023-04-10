@@ -55,8 +55,26 @@ const findById = async (id) => {
   return post;
 };
 
+const update = async (title, content, idPost, token) => {
+  const { id } = authenticateToken(token);
+  const { userId } = await findById(id);
+  console.log(id, userId);
+
+  if (id !== userId) {
+    throw Object.assign(new Error('Unauthorized user'), { code: 401 });
+  }
+
+  await BlogPost.update(
+    { title, content, updated: new Date() },
+    { where: { id: idPost } },
+  );
+  const updatedPost = findById(id);
+  return updatedPost;
+};
+
 module.exports = {
   insertPost,
   findAll,
   findById,
+  update,
 };
