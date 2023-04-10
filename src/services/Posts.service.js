@@ -1,4 +1,4 @@
-const { PostCategory, BlogPost } = require('../models');
+const { PostCategory, BlogPost, User, Category } = require('../models');
 const { authenticateToken } = require('../auth/jwt');
 const { verificationCategories } = require('./validations/validationInputsValues');
 
@@ -28,6 +28,18 @@ const insertPost = async (title, content, categoryIds, token) => {
    };
 };
 
+const findAll = async () => {
+  const posts = await BlogPost.findAll({
+    include: [
+      { model: User, as: 'user', attributes: { exclude: ['password'] } },
+      { model: Category, as: 'categories' },
+    ],
+  });
+
+  return posts;
+};
+
 module.exports = {
   insertPost,
+  findAll,
 };

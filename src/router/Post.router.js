@@ -6,5 +6,6 @@ const { validaInputsCreatePost } = require('../middlewares/checkInputs');
 const router = express.Router();
 
 router.post('/', authenticateToken, validaInputsCreatePost, postController.createPost);
+router.get('/', authenticateToken, postController.getAllPosts);
 
 module.exports = router;

@@ -12,9 +12,20 @@ const createPost = async (req, res) => {
     if (error.code) {
       return res.status(error.code).json({ message: error.message });
     }
-    console.log(error);
     return res.status(500).json({ message: 'Error Internal' }); 
   }
 };
 
-module.exports = { createPost };
+const getAllPosts = async (req, res) => {
+  try {
+    const posts = await postController.findAll();
+    return res.status(200).json(posts);
+  } catch (error) {
+    return res.status(500).json({ message: 'Error Internal' }); 
+  }
+};
+
+module.exports = {
+  createPost,
+  getAllPosts,
+};
