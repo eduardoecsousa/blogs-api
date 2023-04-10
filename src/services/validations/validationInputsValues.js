@@ -1,4 +1,5 @@
 const { validaDisplayName, validaEmail, validaPassword } = require('./schema');
+const { Category } = require('../../models');
 
 const validaRegisterUser = (name, email, password) => {
   const validationName = validaDisplayName.validate(name);
@@ -19,6 +20,22 @@ const validaRegisterUser = (name, email, password) => {
   return { code: null, message: '' };
 };
 
+const verificationCategories = async (categories) => {
+  const verfication = await Promise.all(
+    categories.map(async (id) => {
+      const valueCategories = await Category.findByPk(id);
+      return valueCategories !== null;
+    }),
+  );
+  const valida = verfication.every((value) => value === true);
+  if (!valida) {
+    return { code: 400, message: 'one or more "categoryIds" not found' };
+  } 
+
+  return { code: null, message: '' };
+};
+
 module.exports = {
   validaRegisterUser,
+  verificationCategories,
 };
