@@ -25,7 +25,21 @@ const getAllPosts = async (req, res) => {
   }
 };
 
+const getById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const post = await postController.findById(+id);
+    return res.status(200).json(post);
+  } catch (error) {
+    if (error.code) {
+      return res.status(error.code).json({ message: error.message });
+    }
+    return res.status(500).json({ message: 'Error Internal' }); 
+  }
+};
+
 module.exports = {
   createPost,
   getAllPosts,
+  getById,
 };
