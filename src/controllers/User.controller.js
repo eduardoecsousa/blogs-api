@@ -1,5 +1,7 @@
 const userService = require('../services/User.service');
 
+const errorInternal = require('./utils');
+
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -10,7 +12,7 @@ const login = async (req, res) => {
     if (error.code) {
       return res.status(error.code).json({ message: error.message });
     }
-    return res.status(500).json({ message: 'Error Internal' }); 
+    return res.status(errorInternal[0]).json({ message: errorInternal[1] }); 
   }
 };
 
@@ -24,7 +26,7 @@ const createUser = async (req, res) => {
     if (error.code) {
       return res.status(error.code).json({ message: error.message });
     }
-    return res.status(500).json({ message: 'Error Internal' }); 
+    return res.status(errorInternal[0]).json({ message: errorInternal[1] }); 
   }
 };
 
@@ -34,7 +36,7 @@ const getAll = async (req, res) => {
 
     return res.status(200).json(users);
   } catch (error) {
-    return res.status(500).json({ message: 'Error Internal' }); 
+    return res.status(errorInternal[0]).json({ message: errorInternal[1] }); 
   }
 };
 
@@ -48,7 +50,18 @@ const getUserById = async (req, res) => {
     if (error.code) {
       return res.status(error.code).json({ message: error.message });
     }
-    return res.status(500).json({ message: 'Error Internal' });
+    return res.status(errorInternal[0]).json({ message: errorInternal[1] });
+  }
+};
+
+const deleteUser = async (req, res) => {
+  try {
+    const token = req.header('Authorization');
+
+    await userService.deleteUser(token);
+    return res.status(204).json();
+  } catch (error) {
+    return res.status(errorInternal[0]).json({ message: errorInternal[1] });
   }
 };
 
@@ -57,4 +70,5 @@ module.exports = {
   createUser,
   getAll,
   getUserById,
+  deleteUser,
 };

@@ -1,6 +1,6 @@
 const postService = require('../services/Posts.service');
 
-const errorInternal = [500, 'Error Internal'];
+const errorInternal = require('./utils');
 
 const createPost = async (req, res) => {
   try {
@@ -73,10 +73,23 @@ const deletePost = async (req, res) => {
   }
 };
 
+const getSearchText = async (req, res) => {
+  try {
+    const { q } = req.query;
+    const posts = await postService.searchPost(q);
+
+    return res.status(200).json(posts);
+  } catch (error) {
+    console.log(error);
+    return res.status(errorInternal[0]).json({ message: errorInternal[1] }); 
+  }
+};
+
 module.exports = {
   createPost,
   getAllPosts,
   getById,
   updatePost,
   deletePost,
+  getSearchText,
 };

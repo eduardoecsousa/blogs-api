@@ -6,6 +6,7 @@ const { validaInputsCreatePost, validaInputsUpdatePost } = require('../middlewar
 const router = express.Router();
 
 router.post('/', authenticateToken, validaInputsCreatePost, postController.createPost);
+router.get('/search', authenticateToken, postController.getSearchText);
 router.get('/', authenticateToken, postController.getAllPosts);
 router.get('/:id', authenticateToken, postController.getById);
 router.put('/:id', authenticateToken, validaInputsUpdatePost, postController.updatePost);
