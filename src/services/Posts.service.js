@@ -57,7 +57,7 @@ const findById = async (id) => {
 
 const update = async (title, content, idPost, token) => {
   const { id } = authenticateToken(token);
-  const { userId } = await findById(id);
+  const { userId } = await findById(idPost);
   console.log(id, userId);
 
   if (id !== userId) {
@@ -72,9 +72,31 @@ const update = async (title, content, idPost, token) => {
   return updatedPost;
 };
 
+const deletePost = async (idPost, token) => {
+  const { id } = authenticateToken(token);
+  const { userId } = await findById(idPost);
+
+  if (!userId) {
+    throw Object.assign(new Error('Post does not exist'), { code: 404 });
+  }
+
+  if (id !== userId) {
+    throw Object.assign(new Error('Unauthorized user'), { code: 401 });
+  }
+  
+  await BlogPost.destroy({
+    where: {
+      id: idPost,
+    },
+  });
+
+  return true;
+};
+
 module.exports = {
   insertPost,
   findAll,
   findById,
   update,
+  deletePost,
 };
